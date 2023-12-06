@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.content-wrapper {
+    background-color: #f6f6f6;
+}
+
+.prompt-helper {
+    background-color: #e9ecef;
+}
+
