@@ -28,6 +28,10 @@ const handleClick = () => {
 export default function Home() {
   const [promptValue, setPromptValue] = React.useState('');
   const [selectValue, setSelectValue] = React.useState({});
+  const [sliderValue, setSliderValue] = React.useState({}) as any;
+  const [lightningValue, setLightningValue] = React.useState({});
+  const [cameraValue, setCameraValue] = React.useState({});
+  const [colorValue, setColorValue] = React.useState({});
 
   const textChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
@@ -43,6 +47,18 @@ export default function Home() {
     return `--${key} ${value} `
   }).join('');
 
+  const lightningValueMapped = Object.entries(lightningValue).map(([key, value]) => {
+    return `${key.toLocaleLowerCase()}::${value} `
+  }).join('');
+
+  const cameraValueMapped = Object.entries(cameraValue).map(([key, value]) => {
+    return `${key.toLocaleLowerCase()}::${value} `
+  }).join('');
+
+  const colorValueMapped = Object.entries(colorValue).map(([key, value]) => {
+    return `${key.toLocaleLowerCase()}::${value} `
+  }).join('');
+
   return (
     <Box bgcolor="f6f6f6">
       <Stack ml={10} mr={10} >
@@ -52,7 +68,7 @@ export default function Home() {
             <TextField fullWidth id="outlined-basic" placeholder='Start typing your main idea...' onChange={textChange} variant="outlined" />
           </Box>
           <Box flex={1} m={1}>
-            <TextField fullWidth sx={{ background: "#e9ecef" }} InputProps={{ readOnly: true, }} id="outlined-basic" value={'/imagine prompt: ' + promptValue + selectValueMapped} variant="outlined" />
+            <TextField fullWidth sx={{ background: "#e9ecef" }} InputProps={{ readOnly: true, }} id="outlined-basic" value={'/imagine prompt: ' + promptValue + lightningValueMapped + cameraValueMapped + colorValueMapped + selectValueMapped} variant="outlined" />
           </Box>
           <Box display="flex" justifyContent="center">
             <Box p={1}>
@@ -63,7 +79,7 @@ export default function Home() {
             </Box>
           </Box>
         </Stack>
-        <Stack bgcolor="f6f6f6">
+        <Stack bgcolor="f6f6f6" className='name1'>
           <Box display="flex" pt={4} pl={4} pr={4} flex={2} justifyContent="space-between">
             <SelectBox
               icon={<AspectRatioIcon />}
@@ -165,13 +181,39 @@ export default function Home() {
             />
           </Box>
           <Box display="flex" justifyContent="center">
-            <ModalButton />
-            <ModalButton />
-            <ModalButton />
-            <ModalButton />
+            <ModalButton
+              modalName={"Lighting"}
+              sliderValue={lightningValue}
+              setSliderValue={setLightningValue}
+              imageCardNames={["16-bit", "1800s", "1980s", "4-bit", "8-bit", "Amber"]}
+            />
+            <ModalButton
+              modalName={"Camera"}
+              sliderValue={cameraValue}
+              setSliderValue={setCameraValue}
+              imageCardNames={["360 Panorama", "360 Photo", "360 Video", "3D", "3D Photo", "3D Video"]}
+            />
+            <ModalButton
+              modalName={"Color"}
+              sliderValue={colorValue}
+              setSliderValue={setColorValue}
+              imageCardNames={["Baby Blue Color", "Beige", "Blue", "Gold Color", "Green", "Grey"]}
+            />
           </Box>
           <Box>
-            <ContentSlider />
+            {lightningValue && Object.entries(lightningValue).map(([key, value]) => {
+              return <ContentSlider sliderValue={value} valueKey={key} lightningValue={lightningValue} setSliderValue={setLightningValue} ser name={"Lighting: " + key} />
+            })}
+          </Box>
+          <Box>
+            {cameraValue && Object.entries(cameraValue).map(([key, value]) => {
+              return <ContentSlider sliderValue={value} valueKey={key} lightningValue={cameraValue} setSliderValue={setCameraValue} ser name={"Camera: " + key} />
+            })}
+          </Box>
+          <Box>
+            {colorValue && Object.entries(colorValue).map(([key, value]) => {
+              return <ContentSlider sliderValue={value} valueKey={key} lightningValue={colorValue} setSliderValue={setColorValue} ser name={"Color: " + key} />
+            })}
           </Box>
         </Stack>
       </Stack>
